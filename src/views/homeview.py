@@ -1,10 +1,9 @@
 import flet as ft
 
 class HomeView(ft.Column):
-    def __init__(self):
+    def __init__(self, page: ft.Page):
         super().__init__()
-        self.build()
-
-    def build(self):
-        self.controls.append(ft.Text("Bienvenido a la Home View", size=24, weight=ft.FontWeight.BOLD))
-        # Aquí puedes agregar más controles para mostrar contenido relevante en la Home View
+        self.controls = [
+            ft.Text("Bienvenido a Music App", size=24, weight="bold"),
+            ft.Text("Selecciona una opción en la barra inferior"),
+        ]

@@ -14,22 +14,15 @@ sys.path.append(project_root)
 
 import flet as ft
 
-from src.controllers.user_controller import UserController
-from src.controllers.preferences_controller import PreferencesController
-
 from src.views.homeview import HomeView
-from src.views.registerview import RegisterView
-from src.views.loginview import LoginView
-from src.views.listview import ListView
 from src.views.navigationbar import NavigationBar
 from src.views.playlistview import PlaylistView
-from src.views.profileview import ProfileView
 
 def main(page: ft.Page):
     # Configuración principal de la página
     page.title = "Music App"
     
-    page.theme_mode = ft.ThemeMode.LIGHT
+    page.theme_mode = ft.ThemeMode.DARK
 
     # Configuración de las dimensiones de la ventana (estilo móvil)
     page.window.width = 400
@@ -47,6 +40,37 @@ def main(page: ft.Page):
     # init_sqlite_db()
     # print("SQLite Inicializado")
 
+    def route_change(e): # Añade el parámetro 'e'
+        page.views.clear()
+        
+        # Barra de navegación
+        nav = NavigationBar(page)
+
+        if page.route == "/":
+            page.views.append(
+                ft.View(
+                    route="/",
+                    controls=[HomeView(page)],
+                    navigation_bar=nav,
+                )
+            )
+        elif page.route == "/playlist":
+            page.views.append(
+                ft.View(
+                    route="/playlist",
+                    controls=[PlaylistView(page)],
+                    navigation_bar=nav,
+                )
+            )
+        page.update()
+
+    # 1. Asignar el evento
+    page.on_route_change = route_change
+    
+    # 2. LA CORRECCIÓN: En lugar de push_route o go, haz esto:
+    page.route = "/" 
+    page.on_route_change(None) # Llamamos a la función manualmente para cargar la Home
+
 
 if __name__ == "__main__":
-    ft.run(target=main)
+    ft.run(main)

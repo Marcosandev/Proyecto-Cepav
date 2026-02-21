@@ -56,6 +56,9 @@ class PostgresConnector:
 
     def execute_query(self, query, params=None, is_insert=False, is_update=False):
         """Ejecuta consultas SQL seguras y maneja reconexión automática."""
+        if params is None:
+            params = []
+
         if not self.connection:
             print("⚠️ Conexión PostgreSQL no activa. Intentando reconectar...")
             if not self.connect_to_db():
