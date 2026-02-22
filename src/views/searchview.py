@@ -29,7 +29,7 @@ class SearchView(ft.Column):
             on_change=self.ejecutar_busqueda,
             on_submit=self.ejecutar_busqueda
         )
-
+        
         # Botones de Filtro
         self.btn_canciones = ft.TextButton(
             content="Canciones",
