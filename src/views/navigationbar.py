@@ -6,10 +6,10 @@ class NavigationBar(ft.NavigationBar):
         if light is None and page is not None:
             light = page.theme_mode == ft.ThemeMode.LIGHT
 
-            on_change = self._change_view if page is not None else None
+        on_change = self._change_view if page is not None else None
 
-            bgcolor = ft.Colors.WHITE if light else ft.Colors.BLACK
-            icon_color = ft.Colors.BLACK if light else ft.Colors.WHITE
+        bgcolor = ft.Colors.WHITE if light else ft.Colors.BLACK
+        icon_color = ft.Colors.BLACK if light else ft.Colors.WHITE
         
         super().__init__(
             selected_index=selected_index,
