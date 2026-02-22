@@ -23,8 +23,7 @@ def main(page: ft.Page):
     page.title = "Music App"
     
     page.theme_mode = ft.ThemeMode.DARK
-
-    # Configuración de las dimensiones de la ventana (estilo móvil)
+    
     page.window.width = 400
     page.window.height = 750
     page.window.resizable = False
