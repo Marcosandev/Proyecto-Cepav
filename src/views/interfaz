@@ -1,0 +1,111 @@
+import flet as ft
+
+def main(page: ft.Page):
+    # Configuración de la página (estilo teléfono móvil)
+    page.title = "Music Player UI"
+    page.window_width = 380
+    page.window_height = 700
+    page.bgcolor = "#000000"  # Fondo negro puro como en tu imagen
+    page.vertical_alignment = ft.MainAxisAlignment.CENTER
+    page.horizontal_alignment = ft.CrossAxisAlignment.CENTER
+    page.padding = 20
+
+    # 1. Imagen del Álbum con efecto Neón (Glow)
+    # Usamos un Container con BoxShadow para replicar el brillo de la foto
+    album_art = ft.Container(
+        content=ft.Icon(
+            name=ft.Icons.WAVES_ROUNDED, 
+            size=120, 
+            color=ft.Colors.CYAN_ACCENT
+        ),
+        width=260,
+        height=260,
+        bgcolor=ft.Colors.WHITE10,
+        border_radius=40,
+        alignment=ft.alignment.center,
+        shadow=ft.BoxShadow(
+            blur_radius=60,
+            color=ft.Colors.with_opacity(0.15, ft.Colors.CYAN_ACCENT),
+            spread_radius=2,
+        ),
+    )
+
+    # 2. Información de la canción
+    song_info = ft.Column(
+        controls=[
+            ft.Text("Song title", size=30, weight=ft.FontWeight.BOLD, color=ft.Colors.WHITE),
+            ft.Text("Singer", size=18, color=ft.Colors.WHITE70),
+        ],
+        horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        spacing=5,
+    )
+
+    # 3. Barra de Progreso (Slider personalizado)
+    progress_container = ft.Column(
+        controls=[
+            ft.Slider(
+                min=0, 
+                max=100, 
+                value=45,
+                active_color=ft.Colors.CYAN_ACCENT,
+                inactive_color=ft.Colors.WHITE24,
+            ),
+            ft.Row(
+                controls=[
+                    ft.Text("02:20", color=ft.Colors.WHITE38, size=12),
+                    ft.Text("04:10", color=ft.Colors.WHITE38, size=12),
+                ],
+                alignment=ft.MainAxisAlignment.SPACE_BETWEEN,
+            )
+        ],
+        spacing=0,
+    )
+
+    # 4. Controles de Reproducción
+    play_controls = ft.Row(
+        controls=[
+            ft.IconButton(icon=ft.Icons.SKIP_PREVIOUS_ROUNDED, icon_color=ft.Colors.WHITE, icon_size=40),
+            ft.IconButton(
+                icon=ft.Icons.PLAY_ARROW_ROUNDED, 
+                icon_color=ft.Colors.BLACK, 
+                icon_size=50,
+                bgcolor=ft.Colors.WHITE, # Botón de play blanco para resaltar
+            ),
+            ft.IconButton(icon=ft.Icons.SKIP_NEXT_ROUNDED, icon_color=ft.Colors.WHITE, icon_size=40),
+        ],
+        alignment=ft.MainAxisAlignment.CENTER,
+        spacing=20,
+    )
+
+    # 5. Barra inferior (Iconos extras)
+    footer_icons = ft.Row(
+        controls=[
+            ft.IconButton(icon=ft.Icons.REPEAT_ONE_ROUNDED, icon_color=ft.Colors.WHITE38, icon_size=20),
+            ft.IconButton(icon=ft.Icons.SHUFFLE_ROUNDED, icon_color=ft.Colors.WHITE38, icon_size=20),
+            ft.IconButton(icon=ft.Icons.DOWNLOAD_FOR_OFFLINE_ROUNDED, icon_color=ft.Colors.WHITE38, icon_size=20),
+        ],
+        alignment=ft.MainAxisAlignment.SPACE_EVENLY,
+    )
+
+    # Agregar todo a la pantalla
+    page.add(
+        ft.Column(
+            controls=[
+                ft.Row([ft.IconButton(icon=ft.Icons.KEYBOARD_ARROW_DOWN, icon_color=ft.Colors.WHITE)], alignment=ft.MainAxisAlignment.START),
+                ft.Container(height=20), # Espaciador
+                album_art,
+                ft.Container(height=30), # Espaciador
+                song_info,
+                ft.Container(height=30), # Espaciador
+                progress_container,
+                play_controls,
+                ft.Container(height=20), # Espaciador
+                footer_icons
+            ],
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+        )
+    )
+
+# Ejecutar la aplicación
+if __name__ == "__main__":
+    ft.app(target=main)
