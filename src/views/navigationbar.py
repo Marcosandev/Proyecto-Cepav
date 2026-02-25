@@ -1,7 +1,7 @@
 import flet as ft
 
 class NavigationBar(ft.NavigationBar):
-    def __init__(self, page: ft.Page | None = None, selected_index: int = 1, light: bool | None = None):
+    def __init__(self, page: ft.Page | None = None, selected_index: int = 0, light: bool | None = None):
     
         if light is None and page is not None:
             light = page.theme_mode == ft.ThemeMode.LIGHT

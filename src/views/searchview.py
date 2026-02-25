@@ -15,11 +15,12 @@ class SearchView(ft.Column):
         self.main_page = page
         self.controller = SearchController()
         # Modos adaptados a música
-        self.mode = "canciones" 
+        self.mode = "canciones"
 
         # Barra de búsqueda
         self.search_field = ft.TextField(
             hint_text="¿Qué quieres escuchar?",
+            expand=True, # Mantenemos tu expand
             prefix_icon=ft.Icons.SEARCH,
             border_radius=15,
             filled=True,
@@ -32,12 +33,12 @@ class SearchView(ft.Column):
         
         # Botones de Filtro
         self.btn_canciones = ft.TextButton(
-            content="Canciones",
+            content=ft.Text("Canciones"), # Corregido a content=ft.Text para evitar el error de 'text'
             on_click=lambda e: self.cambiar_modo("canciones"),
             style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10), bgcolor=ft.Colors.BLUE_900 if page.theme_mode == ft.ThemeMode.DARK else ft.Colors.BLUE_50)
         )
         self.btn_artistas = ft.TextButton(
-            content="Artistas/Álbumes",
+            content=ft.Text("Artistas"),
             on_click=lambda e: self.cambiar_modo("artistas"),
             style=ft.ButtonStyle(shape=ft.RoundedRectangleBorder(radius=10))
         )
@@ -58,9 +59,13 @@ class SearchView(ft.Column):
         self.controls = [
             ft.Container(
                 content=ft.Column([
-                    ft.Text("Buscar Música", size=28, weight=ft.FontWeight.BOLD),
+                    ft.Text("Buscar Música", size=24, weight=ft.FontWeight.BOLD),
                     ft.Divider(height=10, color=ft.Colors.TRANSPARENT),
-                    self.search_field,
+                    
+                    # EL AJUSTE ESTÁ AQUÍ:
+                    # Al meter el TextField(expand=True) en un Row, solo se estira a lo ancho
+                    ft.Row([self.search_field]), 
+                    
                     ft.Divider(height=5, color=ft.Colors.TRANSPARENT),
                     row_botones,
                     ft.Divider(height=20),
@@ -73,7 +78,8 @@ class SearchView(ft.Column):
 
     def cambiar_modo(self, mode):
         self.mode = mode
-        is_dark = self.page.theme_mode == ft.ThemeMode.DARK
+        # Usamos self.main_page porque self.page da error de setter
+        is_dark = self.main_page.theme_mode == ft.ThemeMode.DARK
         active_color = ft.Colors.BLUE_900 if is_dark else ft.Colors.BLUE_50
         
         if mode == "canciones":
@@ -129,4 +135,3 @@ class SearchView(ft.Column):
     def play_song(self, song):
         # Aquí llamarías a tu lógica de reproducción
         print(f"Reproduciendo: {song['title']}")
-        # Ejemplo: self.page.session.set("current_song", song)
