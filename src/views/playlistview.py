@@ -146,33 +146,34 @@ class PlaylistView(ft.Stack):
 
     def _actualizar_progreso_loop(self):
         while True:
-            if PYGAME_AVAILABLE:
+            # IMPORTANTE: Esperar a que el slider esté asignado por el PlayerPanel
+            if hasattr(self, "slider_progreso") and PYGAME_AVAILABLE:
                 if pygame.mixer.music.get_busy():
-                    pos = pygame.mixer.music.get_pos() / 1000
-                    if pos >= 0:
+                    # Usamos get_pos() de forma más segura
+                    pos_ms = pygame.mixer.music.get_pos()
+                    if pos_ms >= 0:
+                        pos = pos_ms / 1000
                         self.slider_progreso.value = pos
                         self.lbl_tiempo_actual.value = self._formatear_tiempo(pos)
 
-                        # Solo llamamos a update() si el control ya está en la página
                         try:
+                            # Actualizamos solo si el control está "vivo"
                             if self.slider_progreso.page: 
                                 self.slider_progreso.update()
-                            if self.page:
+                                # Forzamos el redibujado de la página para evitar que se congele
                                 self.page.update()
                         except Exception:
-                            # Si falla porque el control se destruyó al cerrar la app, ignoramos
                             pass
                 
                 # Lógica de fin de canción
                 elif self.indice_actual != -1:
-                    pos_actual = pygame.mixer.music.get_pos() / 1000
-                    if pos_actual == -1 or pos_actual < 0:
+                    if pygame.mixer.music.get_pos() == -1:
                         if self.is_loop:
                             self.reproducir(self.indice_actual)
                         else:
                             self._cambiar_cancion(1)
             
-            time.sleep(0.4)
+            time.sleep(0.5)
 
     def _formatear_tiempo(self, segundos):
         mins = int(segundos // 60)
